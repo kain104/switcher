@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/loginMember.css">
+
+    <!--引入axios-->
+    <script src="js/axios.min.js"></script>
+    <!--引入vue-->
+    <script src="js/vue.js"></script>
+
+    <style>
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        td {
+            font-size: 14px;
+        }
+    </style>
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <title>會員</title>
+</head>
+<body>
+<div class="about">
+
+    <div class="nav">
+        <a href="../index.html" class="logo"><img src="img/controller.png" alt=""></a>
+        <span class=faa><i class="fa fa-bars"></i></span>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#">最新消息</a></li>
+                <li><a href="#">關於我們</a></li>
+                <li><a href="#">商品列表</a></li>
+                <li><a href="#">會員專區</a></li>
+
+                <!-- 購物車 -->
+                <li>
+                    <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div id="app" class="center-container">會員名單
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>USERNAME</th>
+            <th>PASSWORD</th>
+            <th>NICKNAME</th>
+            <th>ROLE_ID</th>
+            <th>CREATE_DATE</th>
+            <th>更新處理</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="member in members" :key="member.id">
+            <td>{{ member.id }}</td>
+            <td>{{ member.username }}</td>
+            <td>{{ member.password }}</td>
+            <td>{{ member.nickname }}</td>
+            <td>{{ member.roleId }}</td>
+            <td>{{ member.createDate }}</td>
+            <td>
+                <button>更新</button>
+                <button @click="deleteMember(member.id)">刪除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                members: []
+            }
+        },
+        created() {
+            this.getMembers();
+            // axios.get('/members')
+            //     .then(response => {
+            //         this.members = response.data;
+            //     })
+            //     .catch(error => {
+            //         console.error(error);
+            //     });
+        },
+        methods: {
+            getMembers(){
+                axios.get('/members')
+                    .then(response => {
+                        this.members = response.data;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            },
+            deleteMember(id) {
+                axios.delete('/memberDelete/' + id)
+                    .then(response => {
+                        if (response.data === '成功') {
+                            alert('刪除成功');
+                            this.getMembers();
+                        } else {
+                            alert('刪除失敗');
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    })
+            }
+
+        }
+    })
+
+
+    // new Vue({
+    //     el: '#app',
+    //     data() {
+    //         return {
+    //             id: '',
+    //             username: '',
+    //             password: '',
+    //             nickname: '',
+    //             roleId: 0,
+    //             message: '',
+    //             isLoggedIn: false
+    //         };
+    //     },
+    //     created(){
+    //       if (sessionStorage.getItem('roleId')){
+    //           this.roleId = parseInt(sessionStorage.getItem('roleId'));
+    //           this.nickname = sessionStorage.getItem('nickname');
+    //       }
+    //     },
+    //     methods: {
+    //         // 登入
+    //         login() {
+    //             const loginData = {
+    //                 username: this.username,
+    //                 password: this.password,
+    //             };
+    //
+    //             // 回傳member作法
+    //             axios.post('/login', loginData)
+    //                 .then(response => {
+    //                     if (response.data === '') {
+    //                         this.message = '登入失敗';
+    //                     } else {
+    //                         this.message = '登入成功';
+    //                         sessionStorage.setItem('nickname', response.data.nickname);
+    //                         sessionStorage.setItem('roleId', response.data.roleId);
+    //                         sessionStorage.setItem('id', response.data.id)
+    //                         window.location.href = "../index.html";
+    //                         alert("歡迎" + response.data.nickname + "id:" + response.data.id);
+    //                     }
+    //                 })
+    //                 .catch(error => {
+    //                     console.error('失敗', error);
+    //                 });
+    //         },
+    //         // 登出
+    //         signOut(){
+    //             axios.get('/signOut');
+    //             sessionStorage.clear();
+    //             window.location.href = "../index.html";
+    //             alert("已登出");
+    //         },
+    //         // 更改密碼 確認登入
+    //         pwdUpdate(){
+    //             axios.get('/checkLogin')
+    //                 .then(response => {
+    //                     if (response.data === '成功'){
+    //                         window.location.href = 'pwdUpdate.html';
+    //                     }else {
+    //                         window.location.href = '../index.html';
+    //                     }
+    //                 })
+    //         },
+    //         // 會員編輯 確認登入
+    //         memberEdit(){
+    //             axios.get('/checkLogin')
+    //                 .then(response => {
+    //                     if (response.data === '成功'){
+    //                         window.location.href = 'memberEdit.html';
+    //                     }else {
+    //                         window.location.href = '../index.html';
+    //                     }
+    //                 })
+    //         },
+    //         memberList(){
+    //             axios.get('/checkLogin')
+    //                 .then(response => {
+    //                     if (response.data === '成功'){
+    //                         window.location.href = 'members.html';
+    //                     }else {
+    //                         window.location.href = '../index.html';
+    //                     }
+    //                 })
+    //         }
+    //     }
+    // });
+</script>
+
+</body>
+</html>

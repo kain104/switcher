@@ -1,0 +1,70 @@
+@import url("reset.css");
+
+body {
+    line-height: 1.6;
+    background-color: #ffffff;
+    color: black
+}
+
+*{
+    box-sizing: border-box
+}
+
+.wrapper {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #ffffff;
+}
+
+/*nav目錄列表*/
+.nav {
+    overflow: hidden;
+    height: 75px;
+    border-bottom: 1px solid #636363;
+    z-index: 10;
+}
+
+.logo {
+    float: left;
+    width: auto;
+    height: 100%;
+    padding-top: 7px;
+    margin-left: 40px;
+}
+
+.nav img {
+    height: 100%;
+    width: auto;
+}
+
+.nav .fa{
+    display: none;
+}
+
+.nav ul {
+    float: right;
+    padding-top: 25px;
+    padding-right: 40px;
+    margin-right: 0px;
+}
+
+.nav li {
+    float: left;
+    margin-left: 50px;
+}
+
+.nav li a {
+    color: #000;
+    font-size: 1em;
+    text-decoration: none;
+    background-image: linear-gradient(#00174d, #00174d);
+    background-position: left bottom;
+    background-size: 0 2.5px;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s;
+}
+
+
+.nav li a:hover {
+    background-size: 100% 1px;
+}

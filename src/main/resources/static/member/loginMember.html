@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/loginMember.css">
+
+    <!--引入axios-->
+    <script src="js/axios.min.js"></script>
+    <!--引入vue-->
+    <script src="js/vue.js"></script>
+
+    <style>
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+    </style>
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <title>會員</title>
+</head>
+<body>
+<div class="about">
+
+    <div class="nav">
+        <a href="../index.html" class="logo"><img src="img/controller.png" alt=""></a>
+        <span class=faa><i class="fa fa-bars"></i></span>
+        <nav class="navbar">
+            <ul>
+                <li v-if="isLoggedIn" class="login">歡迎{{nickname}}</li>
+                <li><a href="#">最新消息</a></li>
+                <li><a href="#">關於我們</a></li>
+                <li><a href="#">商品列表</a></li>
+                <li><a href="#">會員專區</a></li>
+
+                <!-- 購物車 -->
+                <li>
+                    <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div id="app" class="center-container">
+    <template v-if="roleId === 0">
+        帳號<input type="text" v-model="username" placeholder="帳號"><br>
+        密碼<input type="password" v-model="password" placeholder="密碼"><br>
+        <p>{{ message }}</p>
+        <button @click="login">登入</button>
+        <hr>
+        <a href="registry.html">
+            <button>註冊會員</button>
+        </a>
+        <button>忘記密碼</button>
+    </template>
+    <template v-if="roleId === 1">
+        <p>我是管理員</p>
+        <button @click="memberList">會員列表</button>
+        <button>商品列表</button>
+        <button @click="signOut">登出</button>
+    </template>
+    <template v-if="roleId === 2">
+        <button>商品管理</button>
+        <button>購買紀錄</button>
+        <button @click="memberEdit">編輯個人資訊</button>
+        <button @click="pwdUpdate">更改密碼</button>
+        </a>
+        <button @click="signOut">登出</button>
+    </template>
+</div>
+<script src="../index/js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                id: '',
+                username: '',
+                password: '',
+                roleId: 0,
+                message: '',
+                isLoggedIn: false
+            };
+        },
+        created(){
+          if (sessionStorage.getItem('roleId')){
+              this.roleId = parseInt(sessionStorage.getItem('roleId'));
+              this.nickname = sessionStorage.getItem('nickname');
+          }
+        },
+        methods: {
+            // 登入
+            login() {
+                const loginData = {
+                    username: this.username,
+                    password: this.password,
+                };
+
+                // 回傳member作法
+                axios.post('/login', loginData)
+                    .then(response => {
+                        if (response.data === '') {
+                            this.message = '登入失敗';
+                        } else {
+                            this.message = '登入成功';
+                            sessionStorage.setItem('nickname', response.data.nickname);
+                            sessionStorage.setItem('roleId', response.data.roleId);
+                            sessionStorage.setItem('id', response.data.id)
+                            window.location.href = "../index.html";
+                            alert("歡迎" + response.data.nickname + "id:" + response.data.id);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('失敗', error);
+                    });
+            },
+            // 登出
+            signOut(){
+                axios.get('/signOut');
+                sessionStorage.clear();
+                window.location.href = "../index.html";
+                alert("已登出");
+            },
+            // 更改密碼 確認登入
+            pwdUpdate(){
+                axios.get('/checkLogin')
+                    .then(response => {
+                        if (response.data === '成功'){
+                            window.location.href = 'pwdUpdate.html';
+                        }else {
+                            window.location.href = '../index.html';
+                        }
+                    })
+            },
+            // 會員編輯 確認登入
+            memberEdit(){
+                axios.get('/checkLogin')
+                    .then(response => {
+                        if (response.data === '成功'){
+                            window.location.href = 'memberEdit.html';
+                        }else {
+                            window.location.href = '../index.html';
+                        }
+                    })
+            },
+            memberList(){
+                axios.get('/checkLogin')
+                    .then(response => {
+                        if (response.data === '成功'){
+                            window.location.href = 'members.html';
+                        }else {
+                            window.location.href = '../index.html';
+                        }
+                    })
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

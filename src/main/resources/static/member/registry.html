@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <!--引入axios-->
+    <script src="js/axios.min.js"></script>
+    <!--引入vue-->
+    <script src="js/vue.js"></script>
+
+    <style>
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+    </style>
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <title>會員註冊</title>
+</head>
+<body>
+<div class="about">
+
+    <div class="nav">
+        <a href="../index.html" class="logo"><img src="img/controller.png" alt=""></a>
+        <span class=faa><i class="fa fa-bars"></i></span>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#">最新消息</a></li>
+                <li><a href="#">關於我們</a></li>
+                <li><a href="#">商品列表</a></li>
+                <li><a href="loginMember.html">會員專區</a></li>
+
+                <!-- 購物車 -->
+                <li>
+                    <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div id="app" class="center-container">
+    <h1>註冊會員</h1>
+    帳號<input type="text" v-model="username" placeholder="帳號"><br>
+    密碼<input type="password" v-model="password" placeholder="密碼"><br>
+    確認密碼<input type="password" v-model="confirmPassword" placeholder="確認密碼"><br>
+    暱稱<input type="text" v-model="nickname" placeholder="暱稱"><br>
+    <p>{{ message }}</p>
+    <button @click="registry">送出</button>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                username: '',
+                password: '',
+                confirmPassword: '',
+                nickname: '',
+                message: ''
+            };
+        },
+        methods: {
+            registry() {
+                if(this.username === ''){
+                    this.message = '帳號不能為空';
+                    return;
+                }else if(this.password === ''){
+                    this.message = '密碼不能為空';
+                    return;
+                }else if(this.password !== this.confirmPassword){
+                    this.message = '密碼與確認密碼不同';
+                    return;
+                }else if (this.nickname === ''){
+                    this.message = '暱稱不能為空';
+                    return;
+                }
+
+                const registryData = {
+                    username: this.username,
+                    password: this.password,
+                    nickname: this.nickname
+                };
+
+                axios.post('/registry', registryData)
+                    .then(response => {
+                        if (response.data === '註冊成功'){
+                            this.message = '註冊成功';
+                        }else {
+                            this.message = '帳號重複';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('失敗', error);
+                    });
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

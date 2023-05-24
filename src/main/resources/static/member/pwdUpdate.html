@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <!--引入axios-->
+    <script src="js/axios.min.js"></script>
+    <!--引入vue-->
+    <script src="js/vue.js"></script>
+
+    <style>
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+    </style>
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <title>更改密碼</title>
+</head>
+<body>
+<div class="about">
+
+    <div class="nav">
+        <a href="../index.html" class="logo"><img src="img/controller.png" alt=""></a>
+        <span class=faa><i class="fa fa-bars"></i></span>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#">最新消息</a></li>
+                <li><a href="#">關於我們</a></li>
+                <li><a href="#">商品列表</a></li>
+                <li><a href="loginMember.html">會員專區</a></li>
+
+                <!-- 購物車 -->
+                <li>
+                    <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div id="app" class="center-container">
+    <h1>{{ message }}要更改密碼</h1>
+    <input type="hidden" v-model="id" placeholder="id" readonly><br>
+    舊密碼<input type="password" v-model="oPassword" placeholder="舊密碼"><br>
+    新密碼<input type="password" v-model="nPassword" placeholder="新密碼"><br>
+    確認密碼<input type="password" v-model="confirmPassword" placeholder="確認密碼"><br>
+    <button @click="pwdUpdate">送出</button>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                id: '',
+                oPassword: '',
+                nPassword: '',
+                confirmPassword: '',
+                message: ''
+            };
+        },
+        created() {
+            if (sessionStorage.getItem('id')) {
+                this.id = parseInt(sessionStorage.getItem('id'));
+                this.message = sessionStorage.getItem('nickname')
+            }
+        },
+        methods: {
+            // 更改密碼
+            pwdUpdate() {
+                // const pwdUpdateData = {
+                //     id: this.id,
+                //     oPassword: this.oPassword,
+                //     nPassword: this.nPassword,
+                // }
+                if (this.oPassword === '') {
+                    alert("密碼不能為空");
+                } else if (this.nPassword !== this.confirmPassword) {
+                    alert("兩個密碼不同");
+                } else {
+                    const url = `/pwdUpdate/${this.id}/${this.oPassword}/${this.nPassword}`;
+                    axios.put(url)
+                        .then(response => {
+                            if (response.data === '更改完成') {
+                                alert("更改成功");
+                                window.location.href='loginMember.html'
+                            } else if (response.data === '密碼錯誤'){
+                                alert("密碼錯誤");
+                            }
+                        })
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
