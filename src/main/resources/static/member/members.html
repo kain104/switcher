@@ -78,26 +78,26 @@
     <table>
         <thead>
         <tr>
-            <th>ID</th>
-            <th>USERNAME</th>
-            <th>PASSWORD</th>
-            <th>NICKNAME</th>
-            <th>ROLE_ID</th>
-            <th>CREATE_DATE</th>
-            <th>更新處理</th>
+            <th>會員編號</th>
+            <th>帳號</th>
+            <th>密碼</th>
+            <th>暱稱</th>
+            <th>身份</th>
+            <th>創建日期</th>
+            <th>更改／刪除</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="member in members" :key="member.id">
-            <td>{{ member.id }}</td>
-            <td>{{ member.username }}</td>
+        <tr v-for="member in members" :key="member.memberId">
+            <td>{{ member.memberId }}</td>
+            <td>{{ member.account }}</td>
             <td>{{ member.password }}</td>
             <td>{{ member.nickname }}</td>
             <td>{{ member.roleId }}</td>
             <td>{{ member.createDate }}</td>
             <td>
                 <button>更新</button>
-                <button @click="deleteMember(member.id)">刪除</button>
+                <button @click="deleteMember(member.memberId)">刪除</button>
             </td>
         </tr>
         </tbody>
@@ -132,8 +132,8 @@
                         console.error(error);
                     });
             },
-            deleteMember(id) {
-                axios.delete('/memberDelete/' + id)
+            deleteMember(memberId) {
+                axios.delete('/deleteMember/' + memberId)
                     .then(response => {
                         if (response.data === '成功') {
                             alert('刪除成功');

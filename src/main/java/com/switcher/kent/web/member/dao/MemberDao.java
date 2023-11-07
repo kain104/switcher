@@ -5,16 +5,16 @@ import com.switcher.kent.web.member.entity.Member;
 import java.util.List;
 
 public interface MemberDao {
-    Member selectForLogin(String username, String password);
+    Member selectForLogin(String account, String password);
 
-    Member selectByAccount(String username);
+    Member selectByAccount(String account);
 
     int insert(Member member);
 
-    Member selectById(Integer id);
+    Member selectByMemberId(Integer memberId);
 
 
     List<Member> selectAll();
 
-    String deleteById(Integer id);
+    String deleteByMemberId(Integer memberId);
 }

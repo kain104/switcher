@@ -84,7 +84,7 @@
         el: '#app',
         data() {
             return {
-                id: '',
+                memberId: '',
                 account: '',
                 password: '',
                 roleId: 0,
@@ -115,9 +115,9 @@
                             this.message = '登入成功';
                             sessionStorage.setItem('nickname', response.data.nickname);
                             sessionStorage.setItem('roleId', response.data.roleId);
-                            sessionStorage.setItem('id', response.data.id)
+                            sessionStorage.setItem('memberId', response.data.memberId)
                             window.location.href = "../index.html";
-                            alert("歡迎" + response.data.nickname + "id:" + response.data.id);
+                            alert("歡迎" + response.data.nickname + "memberId:" + response.data.memberId);
                         }
                     })
                     .catch(error => {

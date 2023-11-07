@@ -12,9 +12,9 @@ public interface MemberService {
 
     public String update(Member member);
 
-    public String updatePwdById(Integer id, String oPassword, String nPassword);
+    public String updatePwdByMemberId(Integer memberId, String oPassword, String nPassword);
 
     List<Member> getAllMembers();
 
-    String deleteById(Integer id);
+    String deleteByMemberId(Integer memberId);
 }

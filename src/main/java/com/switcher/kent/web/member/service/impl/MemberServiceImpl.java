@@ -51,9 +51,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public String updatePwdById(Integer id, String oPassword, String nPassword) {
+    public String updatePwdByMemberId(Integer memberId, String oPassword, String nPassword) {
         Member member = new Member();
-        member = dao.selectById(id);
+        member = dao.selectByMemberId(memberId);
 
         if (!member.getPassword().equals(oPassword)){
             System.out.println(member.getPassword() + "===" + oPassword);
@@ -71,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public String deleteById(Integer id) {
-        return dao.deleteById(id);
+    public String deleteByMemberId(Integer memberId) {
+        return dao.deleteByMemberId(memberId);
     }
 }

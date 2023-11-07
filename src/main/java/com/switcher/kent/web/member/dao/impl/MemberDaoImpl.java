@@ -41,8 +41,8 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public Member selectById(Integer id) {
-        return session.get(Member.class, id);
+    public Member selectByMemberId(Integer memberId) {
+        return session.get(Member.class, memberId);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public String deleteById(Integer id) {
-        Member member = session.load(Member.class, id);
+    public String deleteByMemberId(Integer memberId) {
+        Member member = session.load(Member.class, memberId);
         session.remove(member);
         return "成功";
     }

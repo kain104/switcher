@@ -51,7 +51,7 @@ public class MemberController {
         System.out.println("更改中");
         // 使用接收到的參數進行處理
         // ...
-        return service.updatePwdById(id, oPassword, nPassword);
+        return service.updatePwdByMemberId(id, oPassword, nPassword);
     }
 
     // 驗證登入
@@ -80,10 +80,10 @@ public class MemberController {
     }
 
     // 刪除會員
-    @DeleteMapping("/memberDelete/{id}")
-    public String deleteMember(@PathVariable("id") Integer id){
-        System.out.println("刪除" + id);
-        return service.deleteById(id);
+    @DeleteMapping("/deleteMember/{memberId}")
+    public String deleteMember(@PathVariable("memberId") Integer memberId){
+        System.out.println("刪除" + memberId);
+        return service.deleteByMemberId(memberId);
     }
 
 }
