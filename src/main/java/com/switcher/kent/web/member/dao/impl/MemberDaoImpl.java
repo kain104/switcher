@@ -26,11 +26,11 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public Member selectByUsername(String username) {
+    public Member selectByAccount(String account) {
         CriteriaBuilder cBuilder = session.getCriteriaBuilder();
         CriteriaQuery<Member> cQuery = cBuilder.createQuery(Member.class);
         Root<Member> root = cQuery.from(Member.class);
-        cQuery.where(cBuilder.equal(root.get("username"), username));
+        cQuery.where(cBuilder.equal(root.get("account"), account));
         return session.createQuery(cQuery).uniqueResult();
     }
 

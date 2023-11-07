@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 @Data
@@ -33,8 +35,4 @@ public class Member implements Serializable {
     private Timestamp updateDate;
 
 
-    @PreUpdate
-    public void onUpdate() {
-        updateDate = new Timestamp(System.currentTimeMillis());
-    }
 }

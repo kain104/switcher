@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,11 +28,16 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public String registry(Member member) {
-        if (dao.selectByUsername(member.getAccount()) != null){
+        if (dao.selectByAccount(member.getAccount()) != null){
             return "帳號重複，註冊失敗";
         }
 
-        member.setRoleId(2);
+        long timeStamp = System.currentTimeMillis();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = dateFormat.format(new Date(timeStamp));
+
+        member.setUpdateDate(Timestamp.valueOf(formattedDate));
+
         dao.insert(member);
         return "註冊成功";
 

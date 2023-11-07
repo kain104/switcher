@@ -49,7 +49,7 @@
 </div>
 <div id="app" class="center-container">
     <h1>註冊會員</h1>
-    帳號<input type="text" v-model="username" placeholder="帳號"><br>
+    帳號<input type="text" v-model="account" placeholder="帳號"><br>
     密碼<input type="password" v-model="password" placeholder="密碼"><br>
     確認密碼<input type="password" v-model="confirmPassword" placeholder="確認密碼"><br>
     暱稱<input type="text" v-model="nickname" placeholder="暱稱"><br>
@@ -62,7 +62,7 @@
         el: '#app',
         data() {
             return {
-                username: '',
+                account: '',
                 password: '',
                 confirmPassword: '',
                 nickname: '',
@@ -71,7 +71,7 @@
         },
         methods: {
             registry() {
-                if(this.username === ''){
+                if(this.account === ''){
                     this.message = '帳號不能為空';
                     return;
                 }else if(this.password === ''){
@@ -86,7 +86,7 @@
                 }
 
                 const registryData = {
-                    username: this.username,
+                    account: this.account,
                     password: this.password,
                     nickname: this.nickname
                 };
