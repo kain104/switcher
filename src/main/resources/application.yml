@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/switcher
     username: root
-    password: boy20301
+    password: password
     hikari:
       minimum-idle: 5
       maximum-pool-size: 10

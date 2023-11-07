@@ -19,9 +19,9 @@ public class MemberDaoImpl implements MemberDao {
     private Session session;
 
     @Override
-    public Member selectForLogin(String username, String password) {
-        final String sql = "select * from MEMBER where USERNAME = :username and PASSWORD = :password";
-        return session.createNativeQuery(sql, Member.class).setParameter("username", username)
+    public Member selectForLogin(String account, String password) {
+        final String sql = "select * from MEMBER where ACCOUNT = :account and PASSWORD = :password";
+        return session.createNativeQuery(sql, Member.class).setParameter("account", account)
                 .setParameter("password", password).uniqueResult();
     }
 

@@ -19,13 +19,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member login(Member member) {
-        return dao.selectForLogin(member.getUsername(), member.getPassword());
+        return dao.selectForLogin(member.getAccount(), member.getPassword());
     }
 
     @Transactional
     @Override
     public String registry(Member member) {
-        if (dao.selectByUsername(member.getUsername()) != null){
+        if (dao.selectByUsername(member.getAccount()) != null){
             return "帳號重複，註冊失敗";
         }
 

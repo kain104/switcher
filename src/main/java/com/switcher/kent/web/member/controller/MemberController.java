@@ -18,6 +18,7 @@ public class MemberController {
     // 登入
     @PostMapping("/login")
     public Member login(HttpServletRequest request, @RequestBody Member member) {
+        System.out.println(member);
         member = service.login(member);
         if (member != null) {
             HttpSession session = request.getSession();
