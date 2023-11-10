@@ -18,4 +18,6 @@ public interface MemberDao {
 
     String deleteByMemberId(Integer memberId);
 
+    Member selectMemberByAccount(String account);
+
 }

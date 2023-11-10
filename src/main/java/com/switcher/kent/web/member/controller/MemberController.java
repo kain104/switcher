@@ -21,7 +21,6 @@ public class MemberController {
         member = service.login(member);
         if (member != null) {
             HttpSession session = request.getSession();
-            System.out.println(session.getId());
         }
         return member;
     }
@@ -84,6 +83,15 @@ public class MemberController {
     @DeleteMapping("/deleteMember/{memberId}")
     public String deleteMember(@PathVariable("memberId") Integer memberId) {
         return service.deleteByMemberId(memberId);
+    }
+
+    @GetMapping("selectMember/{account}")
+    public Member selectMemberByAccount(@PathVariable("account") String account) {
+
+        Member member = new Member();
+        member = service.selectMemberByAccount(account);
+        return member;
+
     }
 
 }

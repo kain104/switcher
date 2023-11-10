@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -60,5 +61,11 @@ public class MemberDaoImpl implements MemberDao {
         return "成功";
     }
 
+    @Override
+    public Member selectMemberByAccount(String account) {
+        Query query = session.createQuery("from Member where account = :account");
+        query.setParameter("account", account);
+        return (Member) query.uniqueResult();
+    }
 
 }

@@ -71,8 +71,9 @@
     <template v-if="roleId === 2">
         <button @click="memberEdit">更改資料</button>
         <button @click="pwdUpdate">更改密碼</button>
-        </a>
+        <button @click="selectMember">查詢會員</button>
         <button @click="signOut">登出</button>
+        <button @click="deleteMember">刪除會員</button>
     </template>
 </div>
 <script src="../index/js/index.js"></script>
@@ -89,11 +90,11 @@
                 isLoggedIn: false
             };
         },
-        created(){
-          if (sessionStorage.getItem('roleId')){
-              this.roleId = parseInt(sessionStorage.getItem('roleId'));
-              this.nickname = sessionStorage.getItem('nickname');
-          }
+        created() {
+            if (sessionStorage.getItem('roleId')) {
+                this.roleId = parseInt(sessionStorage.getItem('roleId'));
+                this.nickname = sessionStorage.getItem('nickname');
+            }
         },
         methods: {
             // 登入
@@ -123,43 +124,49 @@
                     });
             },
             // 登出
-            signOut(){
+            signOut() {
                 axios.get('/signOut');
                 sessionStorage.clear();
                 window.location.href = "../index.html";
                 alert("已登出");
             },
             // 更改密碼 確認登入
-            pwdUpdate(){
+            pwdUpdate() {
                 axios.get('/checkLogin')
                     .then(response => {
-                        if (response.data === '成功'){
+                        if (response.data === '成功') {
                             window.location.href = 'pwdUpdate.html';
-                        }else {
+                        } else {
                             window.location.href = '../index.html';
                         }
                     })
             },
             // 會員編輯 確認登入
-            memberEdit(){
+            memberEdit() {
                 axios.get('/checkLogin')
                     .then(response => {
-                        if (response.data === '成功'){
+                        if (response.data === '成功') {
                             window.location.href = 'memberEdit.html';
-                        }else {
+                        } else {
                             window.location.href = '../index.html';
                         }
                     })
             },
-            memberList(){
+            memberList() {
                 axios.get('/checkLogin')
                     .then(response => {
-                        if (response.data === '成功'){
+                        if (response.data === '成功') {
                             window.location.href = 'members.html';
-                        }else {
+                        } else {
                             window.location.href = '../index.html';
                         }
                     })
+            },
+            selectMember() {
+                window.location.href = 'selectMember.html';
+            },
+            deleteMember() {
+                console.log("刪除會員");
             }
         }
     });

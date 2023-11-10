@@ -86,4 +86,11 @@ public class MemberServiceImpl implements MemberService {
         return "更改成功";
 
     }
+
+    @Override
+    public Member selectMemberByAccount(String account) {
+        Member member = new Member();
+        member = dao.selectMemberByAccount(account);
+        return member;
+    }
 }

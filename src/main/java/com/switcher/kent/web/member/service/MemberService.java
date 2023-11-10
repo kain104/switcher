@@ -19,4 +19,6 @@ public interface MemberService {
     String deleteByMemberId(Integer memberId);
 
     String updateNicknameByMemberId(Integer memberId, String nickname);
+
+    Member selectMemberByAccount(String account);
 }
