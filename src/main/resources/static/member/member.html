@@ -66,13 +66,10 @@
     <template v-if="roleId === 1">
         <p>我是管理員</p>
         <button @click="memberList">會員列表</button>
-        <button>商品列表</button>
         <button @click="signOut">登出</button>
     </template>
     <template v-if="roleId === 2">
-        <button>商品管理</button>
-        <button>購買紀錄</button>
-        <button @click="memberEdit">編輯個人資訊</button>
+        <button @click="memberEdit">更改資料</button>
         <button @click="pwdUpdate">更改密碼</button>
         </a>
         <button @click="signOut">登出</button>
@@ -115,9 +112,10 @@
                             this.message = '登入成功';
                             sessionStorage.setItem('nickname', response.data.nickname);
                             sessionStorage.setItem('roleId', response.data.roleId);
-                            sessionStorage.setItem('memberId', response.data.memberId)
+                            sessionStorage.setItem('memberId', response.data.memberId);
+                            sessionStorage.setItem('account', response.data.account);
                             window.location.href = "../index.html";
-                            alert("歡迎" + response.data.nickname + "memberId:" + response.data.memberId);
+                            alert("歡迎" + response.data.nickname);
                         }
                     })
                     .catch(error => {

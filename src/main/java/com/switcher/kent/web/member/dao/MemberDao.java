@@ -17,4 +17,5 @@ public interface MemberDao {
     List<Member> selectAll();
 
     String deleteByMemberId(Integer memberId);
+
 }

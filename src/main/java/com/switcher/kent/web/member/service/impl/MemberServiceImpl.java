@@ -74,4 +74,16 @@ public class MemberServiceImpl implements MemberService {
     public String deleteByMemberId(Integer memberId) {
         return dao.deleteByMemberId(memberId);
     }
+
+    @Transactional
+    @Override
+    public String updateNicknameByMemberId(Integer memberId, String nickname) {
+        Member member = new Member();
+        member = dao.selectByMemberId(memberId);
+
+        member.setNickname(nickname);
+
+        return "更改成功";
+
+    }
 }

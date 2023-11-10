@@ -34,10 +34,11 @@
         <span class=faa><i class="fa fa-bars"></i></span>
         <nav class="navbar">
             <ul>
+                <li v-if="isLoggedIn" class="login">歡迎{{nickname}}</li>
                 <li><a href="#">最新消息</a></li>
                 <li><a href="#">關於我們</a></li>
                 <li><a href="#">商品列表</a></li>
-                <li><a href="loginMember.html">會員專區</a></li>
+                <li><a href="member.html">會員專區</a></li>
 
                 <!-- 購物車 -->
                 <li>
@@ -47,12 +48,11 @@
         </nav>
     </div>
 </div>
+<script src="../index/js/index.js"></script>
 <div id="app" class="center-container">
-    <h1>編輯會員</h1>
-    帳號<input type="text" v-model="username" placeholder="帳號"><br>
-    密碼<input type="password" v-model="password" placeholder="密碼"><br>
-    確認密碼<input type="password" v-model="confirmPassword" placeholder="確認密碼"><br>
-    暱稱<input type="text" v-model="nickname" placeholder="暱稱"><br>
+    <h1>更改資料</h1>
+    帳號<input type="text" v-model="account" placeholder="account" readonly><br>
+    暱稱<input type="text" v-model="nickname" placeholder="nickname"><br>
     <p>{{ message }}</p>
     <button @click="update">送出</button>
 </div>
@@ -62,41 +62,35 @@
         el: '#app',
         data() {
             return {
-                username: '',
-                password: '',
-                confirmPassword: '',
+                memberId: '',
+                account: '',
                 nickname: '',
                 message: ''
             };
         },
+        created() {
+            this.account = sessionStorage.getItem('account');
+            this.nickname = sessionStorage.getItem('nickname');
+            if (sessionStorage.getItem('memberId')) {
+                this.memberId = sessionStorage.getItem('memberId');
+            }
+        },
         methods: {
             update() {
-                if(this.username === ''){
-                    this.message = '帳號不能為空';
-                    return;
-                }else if(this.password === ''){
-                    this.message = '密碼不能為空';
-                    return;
-                }else if(this.password !== this.confirmPassword){
-                    this.message = '密碼與確認密碼不同';
-                    return;
-                }else if (this.nickname === ''){
+                if (this.nickname === ''){
                     this.message = '暱稱不能為空';
                     return;
                 }
+                console.log(this.memberId);
+                console.log(this.nickname);
 
-                const registryData = {
-                    username: this.username,
-                    password: this.password,
-                    nickname: this.nickname
-                };
-
-                axios.post('/registry', registryData)
+                axios.put(`/updateMember/${this.memberId}/${this.nickname}`)
                     .then(response => {
-                        if (response.data === '註冊成功'){
-                            this.message = '註冊成功';
+                        if (response.data === '更改成功'){
+                            this.message = '更改成功';
+                            sessionStorage.setItem('nickname', this.nickname);
                         }else {
-                            this.message = '帳號重複';
+                            this.message = '更改失敗';
                         }
                     })
                     .catch(error => {

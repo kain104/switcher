@@ -37,7 +37,7 @@
                 <li><a href="#">最新消息</a></li>
                 <li><a href="#">關於我們</a></li>
                 <li><a href="#">商品列表</a></li>
-                <li><a href="loginMember.html">會員專區</a></li>
+                <li><a href="member.html">會員專區</a></li>
 
                 <!-- 購物車 -->
                 <li>
@@ -61,7 +61,7 @@
         el: '#app',
         data() {
             return {
-                id: '',
+                memberId: '',
                 oPassword: '',
                 nPassword: '',
                 confirmPassword: '',
@@ -69,30 +69,25 @@
             };
         },
         created() {
-            if (sessionStorage.getItem('id')) {
-                this.id = parseInt(sessionStorage.getItem('id'));
+            if (sessionStorage.getItem('memberId')) {
+                this.memberId = parseInt(sessionStorage.getItem('memberId'));
                 this.message = sessionStorage.getItem('nickname')
             }
         },
         methods: {
             // 更改密碼
             pwdUpdate() {
-                // const pwdUpdateData = {
-                //     id: this.id,
-                //     oPassword: this.oPassword,
-                //     nPassword: this.nPassword,
-                // }
                 if (this.oPassword === '') {
                     alert("密碼不能為空");
                 } else if (this.nPassword !== this.confirmPassword) {
                     alert("兩個密碼不同");
                 } else {
-                    const url = `/pwdUpdate/${this.id}/${this.oPassword}/${this.nPassword}`;
+                    const url = `/pwdUpdate/${this.memberId}/${this.oPassword}/${this.nPassword}`;
                     axios.put(url)
                         .then(response => {
                             if (response.data === '更改完成') {
                                 alert("更改成功");
-                                window.location.href='loginMember.html'
+                                window.location.href='member.html'
                             } else if (response.data === '密碼錯誤'){
                                 alert("密碼錯誤");
                             }

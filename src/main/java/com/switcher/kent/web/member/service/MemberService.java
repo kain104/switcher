@@ -17,4 +17,6 @@ public interface MemberService {
     List<Member> getAllMembers();
 
     String deleteByMemberId(Integer memberId);
+
+    String updateNicknameByMemberId(Integer memberId, String nickname);
 }

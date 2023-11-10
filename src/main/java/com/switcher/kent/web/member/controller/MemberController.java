@@ -18,7 +18,6 @@ public class MemberController {
     // 登入
     @PostMapping("/login")
     public Member login(HttpServletRequest request, @RequestBody Member member) {
-        System.out.println(member);
         member = service.login(member);
         if (member != null) {
             HttpSession session = request.getSession();
@@ -30,28 +29,24 @@ public class MemberController {
     // 登出
     @GetMapping("/signOut")
     public void signOut(HttpServletRequest request) {
-        System.out.println("登出了");
         request.getSession().invalidate();
     }
 
     // 會員註冊
     @PostMapping("/registry")
     public String registry(@RequestBody Member member) {
-        System.out.println(member);
         return service.registry(member);
     }
 
     // 更改密碼
-    @PutMapping("/pwdUpdate/{id}/{oPassword}/{nPassword}")
+    @PutMapping("/pwdUpdate/{memberId}/{oPassword}/{nPassword}")
     public String pwdUpdate(
-            @PathVariable Integer id,
+            @PathVariable Integer memberId,
             @PathVariable String oPassword,
             @PathVariable String nPassword
     ) {
-        System.out.println("更改中");
         // 使用接收到的參數進行處理
-        // ...
-        return service.updatePwdByMemberId(id, oPassword, nPassword);
+        return service.updatePwdByMemberId(memberId, oPassword, nPassword);
     }
 
     // 驗證登入
@@ -59,30 +54,35 @@ public class MemberController {
     public String checkLogin(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            System.out.println("成功");
             return "成功";
         } else {
-            System.out.println("失敗");
             return "失敗";
         }
     }
 
     // 會員管理
     @GetMapping("/members")
-    public List<Member> getAllMembers(HttpServletRequest request){
+    public List<Member> getAllMembers(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session == null){
+        if (session == null) {
             System.out.println("不是管理員");
         }
-        System.out.println("印出所有會員");
         List<Member> members = service.getAllMembers();
         return members;
     }
 
+    @PutMapping("/updateMember/{memberId}/{nickname}")
+    public String updateMember(
+            @PathVariable("memberId") Integer memberId,
+            @PathVariable("nickname") String nickname
+    ) {
+        return service.updateNicknameByMemberId(memberId, nickname);
+    }
+
+
     // 刪除會員
     @DeleteMapping("/deleteMember/{memberId}")
-    public String deleteMember(@PathVariable("memberId") Integer memberId){
-        System.out.println("刪除" + memberId);
+    public String deleteMember(@PathVariable("memberId") Integer memberId) {
         return service.deleteByMemberId(memberId);
     }
 
